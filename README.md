@@ -1,77 +1,42 @@
-# Feishu Web Clipper
+# 飞书 Chrome 工具
 
-A Chrome extension that allows you to save web content to Feishu documents in Markdown format.
+## 简介
+这是一个 Chrome 浏览器扩展工具，主要用于增强飞书的使用体验。通过此工具，您可以更方便地在飞书中管理和操作文件。
 
-## Features
+## 主要功能
+- 支持文件上传到飞书云文档
+- 支持文件分享链接获取
+- 自动化文件管理
+- 便捷的文件操作界面
 
-- Extracts main content from web pages
-- Converts HTML content to Markdown format using TurnDown
-- Saves content directly to Feishu documents
-- Configurable Feishu app settings and folder token
-- Progress tracking and status updates
-- Clean and intuitive user interface
+## 安装方法
+1. 下载此仓库到本地
+2. 打开 Chrome 浏览器，进入扩展程序页面（chrome://extensions/）
+3. 开启右上角的"开发者模式"
+4. 点击"加载已解压的扩展程序"，选择本仓库文件夹
 
-## Installation
+## 使用说明
+1. 安装扩展后，在 Chrome 浏览器右上角可以看到扩展图标
+2. 首次使用需要进行飞书账号授权
+3. 点击扩展图标即可使用相关功能
+4. 支持拖拽上传文件
+5. 可以快速获取文件分享链接
 
-1. Clone this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right
-4. Click "Load unpacked" and select the extension directory
+## 开发说明
+- 本工具使用 JavaScript 开发
+- 使用 Chrome Extension Manifest V3
+- 集成了飞书开放平台 API
 
-## Configuration
+## 注意事项
+- 使用前请确保已经拥有飞书账号
+- 需要授予必要的权限才能正常使用
+- 请妥善保管您的授权信息
 
-Before using the extension, you need to:
+## 贡献指南
+欢迎提交 Issue 和 Pull Request，一起完善这个工具。
 
-1. Create a Feishu application in the [Feishu Open Platform](https://open.feishu.cn/)
-2. Configure the application with necessary permissions:
-   - Drive API access permissions
-   - File upload permissions
-3. Get your App ID and App Secret from the Feishu application settings
-4. Get your folder token from Feishu Drive
-5. Enter the App ID, App Secret, and folder token in the extension popup
+## 许可证
+MIT License
 
-## Usage
-
-1. Navigate to any web page you want to save
-2. Click the extension icon in Chrome toolbar
-3. Enter your App ID, App Secret, and folder token (if not already saved)
-4. Click "Save to Feishu"
-5. Wait for the content to be processed and uploaded
-6. The content will be saved as a Markdown file in your specified Feishu folder
-
-## Development
-
-### Project Structure
-
-- `manifest.json`: Extension configuration
-- `popup.html/js`: Extension popup interface
-- `content.js`: Web page content extraction
-- `background.js`: Background processing and API integration
-- `config.js`: Feishu API configuration
-- `turndown.js`: HTML to Markdown conversion
-
-### Required Permissions
-
-- `activeTab`: Access current tab content
-- `storage`: Save user preferences
-- `scripting`: Execute content scripts
-- Host permissions for Feishu API
-
-### API Integration
-
-The extension uses the following Feishu APIs:
-- Tenant Access Token: `/open-apis/auth/v3/tenant_access_token/internal`
-- File Upload: `/open-apis/drive/v1/files/upload_all`
-
-## Todo
-
-- [ ] Implement HTML to Markdown conversion
-- [ ] Add tenant access token management
-- [ ] Improve content extraction algorithm
-- [ ] Add custom conversion rules
-- [ ] Support batch processing
-- [ ] Add more document type support
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 联系方式
+如有问题或建议，请通过 GitHub Issues 与我们联系。

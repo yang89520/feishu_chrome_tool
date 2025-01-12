@@ -123,24 +123,48 @@ chrome.runtime.onMessage.removeListener(backgroundMessageHandler);
 // 添加新的监听器
 chrome.runtime.onMessage.addListener(backgroundMessageHandler);
 
-// 获取授权码
+// 添加一个 Promise 来处理授权码
+let authCodePromiseResolve = null;
+let authCodePromise = null;
+
 async function getAuthCode() {
     try {
         const authUrl = feishuService.getOAuthUrl();
         console.log('授权 URL:', authUrl);
-        
-        // 使用 chrome.identity API 打开授权页面
-        const responseUrl = await chrome.identity.launchWebAuthFlow({
-            url: authUrl,
-            interactive: true
+
+        // 创建新的 Promise
+        authCodePromise = new Promise((resolve) => {
+            authCodePromiseResolve = resolve;
         });
-        
-        // 从回调 URL 中提取授权码
-        const url = new URL(responseUrl);
-        const code = url.searchParams.get('code');
-        if (!code) {
-            throw new Error('未获取到授权码');
-        }
+
+        // 打开授权窗口
+        const authWindow = await chrome.windows.create({
+            url: authUrl,
+            type: 'popup',
+            width: 800,
+            height: 600
+        });
+
+        // 监听 URL 变化
+        chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+            if (changeInfo.url && changeInfo.url.includes('open.feishu.cn/api-explorer/loading')) {
+                const url = new URL(changeInfo.url);
+                const code = url.searchParams.get('code');
+                if (code) {
+                    // 移除监听器
+                    chrome.tabs.onUpdated.removeListener(listener);
+                    // 关闭授权窗口
+                    chrome.windows.remove(authWindow.id);
+                    // 解析 Promise
+                    authCodePromiseResolve(code);
+                }
+            }
+        });
+
+        // 等待授权码
+        const code = await authCodePromise;
+        authCodePromise = null;
+        authCodePromiseResolve = null;
 
         return code;
     } catch (error) {
@@ -148,6 +172,15 @@ async function getAuthCode() {
         throw error;
     }
 }
+
+// 添加消息监听器
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'oauth_callback' && authCodePromiseResolve) {
+        // 收到授权码，解析 Promise
+        authCodePromiseResolve(request.code);
+        sendResponse({ success: true });
+    }
+});
 
 // 修改文件上传处理函数
 async function handleFeishuUpload(data) {

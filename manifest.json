@@ -29,7 +29,11 @@
     }
   ],
   "web_accessible_resources": [{
-    "resources": ["feishu_service.js", "config.js"],
+    "resources": [
+      "feishu_service.js",
+      "config.js",
+      "oauth_callback.html"
+    ],
     "matches": ["<all_urls>"]
   }]
 }

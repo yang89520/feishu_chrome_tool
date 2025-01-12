@@ -137,12 +137,12 @@ export class FeishuService {
     }
 
     getOAuthUrl() {
-        const url = new URL(`${this.baseUrl}/open-apis/authen/v1/index`);
+        const url = new URL('https://accounts.feishu.cn/open-apis/authen/v1/index');
         url.searchParams.append('client_id', this.appId);
         url.searchParams.append('redirect_uri', FEISHU_CONFIG.REDIRECT_URI);
         url.searchParams.append('scope', FEISHU_CONFIG.SCOPE);
         url.searchParams.append('state', FEISHU_CONFIG.STATE);
-        console.log("url", url.toString());
+        console.log("授权 URL:", url.toString());
         return url.toString();
     }
 } 
